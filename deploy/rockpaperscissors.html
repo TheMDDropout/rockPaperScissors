@@ -1,0 +1,388 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+  <head>
+    <meta charset="utf-8">
+    <title></title>
+    <link rel="stylesheet" href="style.css">
+    <link href="https://fonts.googleapis.com/css2?family=VT323&display=swap" rel="stylesheet">
+
+  </head>
+  <body>
+    <div id = "dimBackgroundCanvas"></div>
+    <div class="attribution"><a href="https://www.vecteezy.com/free-vector/vector">Vector Vectors by Vecteezy</a></div>
+    <div class="attribution2"><a href='https://www.freepik.com/vectors/design'>Design vector created by freepik - www.freepik.com</a></div>
+ 
+    <div id="playAgainContainer" class="hidden">
+      <div id="playAgain">Play Again?</div>
+      <div id="yes">Yes</div>
+      <div id="no">No</div>
+    </div>
+    <div id = "hidden">
+      <img id="rockselector" src="images/rock.svg">
+      <img id="paperselector" src="images/paper.svg" alt="">
+      <img id="scissorsselector" src="images/scissors.svg" alt="">
+      <img id="cpurockselector" src="images/rock.svg">
+      <img id="cpupaperselector" src="images/paper.svg" alt="">
+      <img id="cpuscissorsselector" src="images/scissors.svg" alt="">
+    </div>
+    <h1 id="mainTitle">ROCK, PAPER, SCISSORS! </h1>
+    <div id = "scoreContainer">
+      <div class="score" id ='playerScoreCard'>
+        <div id="playerID">Player</div>
+        <div id="point1"></div>
+        <div id="point2"></div>  
+        <div id="point3"></div>  
+        <div id="point4"></div>  
+        <div id="point5"></div>     
+      </div>
+      <div class="score" id ='computerScoreCard'> 
+        <div id="computerID">Computer</div> 
+        <div id="cpupoint5"></div>
+        <div id="cpupoint4"></div>  
+        <div id="cpupoint3"></div>  
+        <div id="cpupoint2"></div>  
+        <div id="cpupoint1"></div>  
+      </div>
+      </div>
+    </div>
+    <div id=playContainer>
+      <div id="rpsCountdown"></div>
+      <div id="playerAnimation"> 
+        <div id = playerAnimation2><img class="playAnimation" src="images/rock.svg" alt=""></div>
+        <div><img id="character" src="images/character.svg" alt=""></div>
+      </div>
+      <div id="computerAnimation"> 
+        <div id="computerAnimation2"><img class="playAnimation" src="images/rock.svg" alt=""></div>
+        <div><img id="robot" src="images/robot.svg" alt=""></div>
+        </div>
+      </div>
+    </div>
+    <div id=mainContainer>
+      <div class="card" id="rock"> <img src="images/rock.svg" alt=""></div>
+      <div class="card" id="paper"> <img src="images/paper.svg" alt=""></div>
+      <div class="card" id="scissors"> <img src="images/scissors.svg" alt=""></div>
+    </div>
+
+    
+    
+    <script type="text/javascript">   
+      let result ="";
+      function playRound () {
+        
+        // let player = playerChoice;
+        if (computer == "rock" && player == "rock") {
+          console.log("It's a tie!" + totalScores())
+          result ="It's a tie!"
+          }
+        else if (computer == "rock" && player == "paper"){
+          playerScore = ++playerScore;
+          console.log("You win! Paper beats rock!" + totalScores())
+          result ="Winner!"
+          characterwin()
+          }
+        else if (computer == "rock" && player == "scissors"){
+          computerScore = ++computerScore;
+          console.log("You lose! Rock beats scissors!" + totalScores())
+          result ="You lost!"
+          robotwin()
+          }
+        else if (computer == "paper" && player == "rock"){
+          computerScore = ++computerScore;
+          console.log("You lose! Paper beats rock!"+ totalScores())
+          result ="You lost!"
+          robotwin()
+          }
+        else if (computer == "paper" && player == "paper"){
+          console.log("It's a tie!" + totalScores())
+          result ="It's a tie!"
+          }
+        else if (computer == "paper" && player == "scissors" + totalScores()){
+          playerScore = ++playerScore;
+          console.log("You win! Scissors beats paper!" + totalScores())
+          result ="Winner!"
+          characterwin()
+          }
+        else if (computer == "scissors" && player == "rock"){
+          playerScore = ++playerScore;
+          console.log("You win! Rock beats scissors!" + totalScores())
+          result ="Winner!"
+          characterwin()
+          }
+        else if (computer == "scissors" && player == "paper"){
+          computerScore = ++computerScore;
+          console.log("You Lose! Scissors beats paper!" + totalScores())
+          result ="You lost!"
+          robotwin()
+          }
+        else if (computer == "scissors" && player == "scissors"){
+          console.log("It's a tie!" + totalScores())
+          result ="It's a tie!"
+          }
+        else {
+          playerScore = ++playerScore;
+          console.log("You win! Scissors beats paper!" + totalScores())
+          result ="Winner!"
+          characterwin()
+          }
+        }
+      
+
+      let readyToAnimate = "yes";
+      const playContainer = document.getElementById('playContainer')
+      const handAnimations = document.getElementsByClassName('playAnimation');
+      
+      function playAnimation() {
+
+        readyToAnimate = "no";
+        handAnimations[0].classList.add('animation')
+        handAnimations[1].classList.add('animation') 
+        playContainer.addEventListener('transitionend',removeAnimation)
+        
+      }
+      function removeAnimation() {
+        handAnimations[0].classList.remove('animation')
+        handAnimations[1].classList.remove('animation') 
+      }
+      function threeAnimation() {
+        let rpsCountdown = document.getElementById("rpsCountdown");
+        for (i=1; i<=3; i++){
+          playAnimation();
+          rpsCountdown.textContent = "ROCK!"
+          rpsCountdown.style.cssText = " font-size: 80px;"
+          setTimeout(playAnimation, 700);
+          setTimeout(function(){rpsCountdown.textContent = "PAPER!"}, 700)
+          setTimeout(playAnimation, 1400)
+          setTimeout(function(){rpsCountdown.textContent = "SCISSORS!"}, 1400)
+        }
+      }
+
+      const hidden = document.getElementById("hidden")
+      let player = "";
+      let computer ="";
+      
+      function computerPlay(){
+        let random = 0
+        random = Math.random()
+        let computerOutput;
+        if (random > 0 && random <.33) {
+          computerOutput = "rock"
+        } else if (random >= .33 && random <.66) {
+          computerOutput = "paper"
+        } else  {
+          computerOutput = "scissors"
+        }
+        return computerOutput;
+      }
+
+      mainContainer.addEventListener('click', playerChoice)
+
+      function playerChoice(e){
+        if (readyToAnimate == "no") return;
+        const cardSelected = document.getElementById(`${e.path[1].id}`);
+        if (!cardSelected) return;
+        if (cardSelected.id == "mainContainer") return;
+        computerPlay();
+        computer = computerPlay();
+        player = cardSelected.id;
+        cardSelected.classList.add('clicked')
+        threeAnimation();
+        // let playerChoiceImage = document.getElementById("playerAnimation");
+        let playerChoiceImage = document.getElementById("playerAnimation2");
+        let playerChoiceImage2 = playerChoiceImage.querySelector("img")
+        let selection = document.getElementById(`${player}selector`)
+
+        // let computerChoiceImage = document.getElementById("computerAnimation")
+        let computerChoiceImage = document.getElementById("computerAnimation2")
+        let computerChoiceImage2 = computerChoiceImage.querySelector("img")
+        let cpuselection = document.getElementById(`cpu${computer}selector`)
+
+        setTimeout(function(){
+          playerChoiceImage.removeChild(playerChoiceImage2)
+          playerChoiceImage.appendChild(selection)
+          computerChoiceImage.removeChild(computerChoiceImage2)
+          computerChoiceImage.appendChild(cpuselection)
+        }, 2000)
+        setTimeout(function(){
+          playRound();
+          if (playerScore == 5 || computerScore == 5){
+            if (playerScore > computerScore) {
+            console.log("Congrats! You won!")
+            result = "Congrats, you won! Play again?"
+            } else {
+            console.log("Sorry, you lost! Play again?")
+            result = "Sorry, you lost! Play again?"
+            }
+            totalScores();
+            let playAgainContainer = document.getElementById("playAgainContainer")
+            let playAgain = document.getElementById("playAgain")
+            let hidden = document.getElementsByClassName("hidden")
+            let dimBackgroundCanvas = document.getElementById("dimBackgroundCanvas")
+            playAgain.textContent = result
+            playAgain.style.cssText = "font-size: 40px;"
+            dimBackgroundCanvas.classList.add("dimBackground")
+            playAgainContainer.classList.remove("hidden")
+            playAgainContainer.addEventListener('click', playAgainChoice)
+          }
+        }, 2000)
+        setTimeout(function(){rpsCountdown.textContent = result}, 2000)
+        setTimeout(function(){
+          playerChoiceImage.appendChild(playerChoiceImage2)
+          hidden.appendChild(selection)
+          computerChoiceImage.appendChild(computerChoiceImage2)
+          hidden.appendChild(cpuselection)
+          readyToAnimate = "yes"
+        }, 3010)
+        setTimeout(function(){rpsCountdown.textContent = ""}, 3000)
+      }
+
+      const cards = document.querySelectorAll('.card')
+      cards.forEach(card => card.addEventListener('transitionend', fadeBack))
+
+      function fadeBack(e) {
+        if (e.propertyName !== "transform") return;
+        this.classList.remove('clicked')
+      }
+      
+      function playAgainChoice (e){
+        const playAgainAnswer = document.getElementById(`${e.target.id}`)
+        if (playAgainAnswer.id == "yes"){
+          playerScore = 6;
+          computerScore = 6;
+          totalScores();
+          let playAgainContainer = document.getElementById("playAgainContainer")
+          let hidden = document.getElementsByClassName("hidden")
+          let dimBackgroundCanvas = document.getElementById("dimBackgroundCanvas")
+          dimBackgroundCanvas.classList.remove("dimBackground")
+          playAgainContainer.classList.add("hidden")
+        }
+        else if (playAgainAnswer.id == "no"){
+          let sad = document.getElementById("playAgain")
+          sad.textContent = ":("
+        }
+      }
+      function characterjump() {
+          let character = document.getElementById("character")
+          character.classList.add("characterwin")
+      }
+      function characterdrop() {
+          let character = document.getElementById("character")
+          character.classList.remove("characterwin")
+      }
+      function characterwin(){
+        for (i=1; i<=5; i++){
+          setTimeout(characterjump,0);
+          setTimeout(characterdrop,200)
+          setTimeout(characterjump,400);
+          setTimeout(characterdrop,600)
+          setTimeout(characterjump,800);
+          setTimeout(characterdrop,1000)
+          setTimeout(characterjump,1200);
+          setTimeout(characterdrop,1400)
+          setTimeout(characterjump,1600);
+          setTimeout(characterdrop,1800)
+          
+        }
+      }
+      function robotjump(){
+        let robot = document.getElementById("robot")
+          robot.classList.add("robotwin")
+      }
+      function robotdrop(){
+        let robot = document.getElementById("robot")
+          robot.classList.remove("robotwin")
+      }
+      function robotwin(){
+        setTimeout(robotjump,0);
+        setTimeout(robotdrop,200)
+        setTimeout(robotjump,400);
+        setTimeout(robotdrop,600)
+        setTimeout(robotjump,800);
+        setTimeout(robotdrop,1000)
+        setTimeout(robotjump,1200);
+        setTimeout(robotdrop,1400)
+        setTimeout(robotjump,1600);
+        setTimeout(robotdrop,1800)
+        
+      }
+      let playerScore = 0;
+      let computerScore = 0;
+      function totalScores() {
+        // return "Player Score: " + playerScore + ", Computer Score: " + computerScore;
+        // playerScoreCard.textContent = `Player: ${playerScore}`;
+        // computerScoreCard.textContent = `CPU: ${computerScore}`;
+        let point1 = document.getElementById('point1')
+        let point2 = document.getElementById('point2')
+        let point3 = document.getElementById('point3')
+        let point4 = document.getElementById('point4')
+        let point5 = document.getElementById('point5')
+        let cpupoint1 = document.getElementById('cpupoint1')
+        let cpupoint2 = document.getElementById('cpupoint2')
+        let cpupoint3 = document.getElementById('cpupoint3')
+        let cpupoint4 = document.getElementById('cpupoint4')
+        let cpupoint5 = document.getElementById('cpupoint5')
+        if (playerScore == 1) {
+          point1.classList.add('point')
+        }
+        else if (playerScore == 2) {
+          point2.classList.add('point')
+        }
+        else if (playerScore == 3) {
+          point3.classList.add('point')
+        }
+        else if (playerScore == 4) {
+          point4.classList.add('point')
+        }
+        else if (playerScore == 5) {
+          point5.classList.add('point')
+        }
+        else if (playerScore == 6) {
+          point1.classList.remove('point')
+          point2.classList.remove('point')
+          point3.classList.remove('point')
+          point4.classList.remove('point')
+          point5.classList.remove('point')
+          playerScore = 0;
+        }
+        
+        if (computerScore == 1) {
+          cpupoint1.classList.add('point')
+        }
+        else if (computerScore == 2) {
+          cpupoint2.classList.add('point')
+        }
+        else if (computerScore == 3) {
+          cpupoint3.classList.add('point')
+        }
+        else if (computerScore == 4) {
+          cpupoint4.classList.add('point')
+        }
+        else if (computerScore == 5) {
+          cpupoint5.classList.add('point')
+        }
+        else if (computerScore == 6) {
+          cpupoint1.classList.remove('point')
+          cpupoint2.classList.remove('point')
+          cpupoint3.classList.remove('point')
+          cpupoint4.classList.remove('point')
+          cpupoint5.classList.remove('point')
+          computerScore = 0;
+        }
+        
+      }
+
+      // if (playerScore >= 6) {
+        
+      // }
+
+      // let playerScoreCard = document.getElementById('playerScoreCard')
+      // playerScoreCard.style.cssText = "font-size: 30px"
+      // let computerScoreCard = document.getElementById('computerScoreCard')
+      // computerScoreCard.style.cssText = "font-size: 30px"
+      
+
+
+
+
+    </script>
+  </body>
+</html>
